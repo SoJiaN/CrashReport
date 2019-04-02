@@ -16,8 +16,7 @@ import android.widget.Toast
 import java.io.*
 import java.lang.Thread.UncaughtExceptionHandler
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.HashMap
+import java.util.*
 
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.
@@ -174,6 +173,20 @@ private constructor() : UncaughtExceptionHandler {
         sb.append("$lineSeparator$writer$lineSeparator")
         printWriter.write("${lineSeparator}this printWriter is closed !!!!!!$lineSeparator")
         printWriter.close()
+
+
+
+        sb.append("*************************************************************************")
+        sb.append(lineSeparator)
+        sb.append(lineSeparator)
+        findRootCause(initialThrowable)?.stackTrace?.forEach {traceElement->
+            this.javaClass.`package`?.name?.let {
+                if (traceElement.className.startsWith(it)) sb.append(traceElement.toString() + lineSeparator)
+            }
+        }
+        sb.append(lineSeparator)
+        sb.append("*************************************************************************")
+
 
         // 其他线程信息
         val hashMap = Thread.getAllStackTraces()
