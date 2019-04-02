@@ -2,6 +2,7 @@ package com.example.crashreport
 
 import android.app.Application
 import android.content.Context
+import com.tencent.bugly.crashreport.CrashReport
 
 /**
  * Copyright © 2013-2018 Worktile. All Rights Reserved.
@@ -19,5 +20,10 @@ class MyApplication : Application() {
         super.attachBaseContext(base)
         CrashHandler.instance.init(baseContext)
         CrashHandler.instance.registerCallback(this)
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        CrashReport.initCrashReport(applicationContext, "93a477e113", true)
     }
 }

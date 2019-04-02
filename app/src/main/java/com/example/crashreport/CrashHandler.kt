@@ -38,9 +38,9 @@ private constructor() : UncaughtExceptionHandler {
     //用于格式化日期,作为日志文件名的一部分
     private val formatter = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
 
-    val callback = CustomActivityLifeCycleCallback()
+    private val callback = CustomActivityLifeCycleCallback()
 
-    val lineSeparator = System.getProperty("line.separator")
+    private val lineSeparator: String? = System.getProperty("line.separator")
 
     /**
      * 初始化
@@ -108,7 +108,7 @@ private constructor() : UncaughtExceptionHandler {
      * 收集设备参数信息
      * @param ctx
      */
-    fun collectDeviceInfo(ctx: Context?) {
+    private fun collectDeviceInfo(ctx: Context?) {
         try {
             val pm = ctx!!.packageManager
             val pi = pm.getPackageInfo(ctx.packageName, PackageManager.GET_ACTIVITIES)
@@ -142,7 +142,6 @@ private constructor() : UncaughtExceptionHandler {
      * @return  返回文件名称,便于将文件传送到服务器
      */
     private fun saveCrashInfo2File(thread: Thread, initialThrowable: Throwable): String? {
-
         val sb = StringBuffer()
         for ((key, value) in infos) {
             sb.append("$key=$value$lineSeparator")
@@ -157,22 +156,17 @@ private constructor() : UncaughtExceptionHandler {
         val writer = StringWriter()
         val printWriter = PrintWriter(writer)
 
-        initialThrowable.fillInStackTrace()
         initialThrowable.printStackTrace(printWriter)
-
+        printWriter.write("${lineSeparator}print initialThrowable completed !!!!!!$lineSeparator")
         var cause: Throwable? = initialThrowable.cause
         while (cause != null) {
-            Log.e("ssssssss_true_log", cause.message)
-            cause.stackTrace.forEach {
-                Log.e("ssssssss_true_log", it.toString())
-            }
-            cause.fillInStackTrace()
             cause.printStackTrace(printWriter)
+            printWriter.write("${lineSeparator}print this cause completed !!!!!!$lineSeparator")
             cause = cause.cause
         }
+        printWriter.write("${lineSeparator}this printWriter is closed !!!!!!$lineSeparator")
         printWriter.close()
-        val result = writer.toString()
-        sb.append("$lineSeparator$result$lineSeparator")
+        sb.append("$lineSeparator$writer$lineSeparator")
 
         // 其他线程信息
         val hashMap = Thread.getAllStackTraces()
@@ -215,6 +209,7 @@ private constructor() : UncaughtExceptionHandler {
      * 得到最开始的 cause
      */
     private var rootCause: Throwable? = null
+
     private fun findRootCause(e: Throwable?): Throwable? {
         return if (e?.cause != null) {
             rootCause = e.cause
