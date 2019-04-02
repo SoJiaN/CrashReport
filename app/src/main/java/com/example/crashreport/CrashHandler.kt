@@ -147,26 +147,33 @@ private constructor() : UncaughtExceptionHandler {
             sb.append("$key=$value$lineSeparator")
         }
 
-        sb.append("$lineSeparator${thread.name}$lineSeparator")
+        sb.append(lineSeparator)
 
+        sb.append("${thread.name}$lineSeparator")
+        var keyStackTraceElement = ""
         findRootCause(initialThrowable)?.stackTrace?.get(0)?.toString()?.let {
-            sb.append("$lineSeparator$it$lineSeparator")
+            keyStackTraceElement = it
+            sb.append("the key stackTraceElement is$lineSeparator $keyStackTraceElement$lineSeparator")
         }
+
+        sb.append(lineSeparator)
+
+        sb.append("just like bugly !!!!!$lineSeparator")
+
+        sb.append(lineSeparator)
+
+        sb.append("$initialThrowable $lineSeparator")
+        sb.append("$keyStackTraceElement $lineSeparator")
+        sb.append("......$lineSeparator")
+        sb.append("Cause by")
 
         val writer = StringWriter()
         val printWriter = PrintWriter(writer)
+        findRootCause(initialThrowable)?.printStackTrace(printWriter)
 
-        initialThrowable.printStackTrace(printWriter)
-        printWriter.write("${lineSeparator}print initialThrowable completed !!!!!!$lineSeparator")
-        var cause: Throwable? = initialThrowable.cause
-        while (cause != null) {
-            cause.printStackTrace(printWriter)
-            printWriter.write("${lineSeparator}print this cause completed !!!!!!$lineSeparator")
-            cause = cause.cause
-        }
+        sb.append("$lineSeparator$writer$lineSeparator")
         printWriter.write("${lineSeparator}this printWriter is closed !!!!!!$lineSeparator")
         printWriter.close()
-        sb.append("$lineSeparator$writer$lineSeparator")
 
         // 其他线程信息
         val hashMap = Thread.getAllStackTraces()

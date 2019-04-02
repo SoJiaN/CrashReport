@@ -13,8 +13,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk{
-            abiFilters 'armeabi', 'x86','x86_64','arm64_v8a'
+        ndk {
+            abiFilters 'armeabi', 'x86', 'x86_64', 'arm64_v8a'
         }
     }
     buildTypes {
@@ -38,5 +38,5 @@ dependencies {
     api 'io.reactivex.rxjava2:rxandroid:2.0.1'
     api 'io.reactivex.rxjava2:rxjava:2.0.9'
 
-    compile 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.tencent.bugly:crashreport:latest.release'
 }
