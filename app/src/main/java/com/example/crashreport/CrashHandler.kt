@@ -175,7 +175,6 @@ private constructor() : UncaughtExceptionHandler {
         printWriter.close()
 
 
-
         sb.append("*************************************************************************")
         sb.append(lineSeparator)
         sb.append(lineSeparator)

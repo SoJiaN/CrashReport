@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.design.widget.Snackbar
+import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
@@ -42,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         togo.setOnClickListener {
             val intent = Intent(this, EmptyActivity::class.java)
             startActivity(intent)
+        }
+
+        anr.setOnClickListener {
+            while (true) Log.e("ANR","CuuuuuuuuuuuuuuuustomANR happen")
         }
     }
 
